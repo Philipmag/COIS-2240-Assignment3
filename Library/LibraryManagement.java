@@ -76,7 +76,7 @@ public class LibraryManagement {
                     Book book = library.findBookById(bookId);
 
                     if (member != null && book != null) {
-                    	Transaction.borrowBook(book, member);
+                    	Transaction.getTransaction().borrowBook(book, member); //use singleton instance
                     } else {
                         System.out.println("Invalid member or book ID.");
                     }
@@ -94,7 +94,7 @@ public class LibraryManagement {
                     book = library.findBookById(bookId);
 
                     if (member != null && book != null) {
-                    	Transaction.returnBook(book, member);
+                    	Transaction.getTransaction().returnBook(book, member);//use singleton instance
                     } else {
                         System.out.println("Invalid member or book ID.");
                     }
@@ -116,7 +116,7 @@ public class LibraryManagement {
                     }
                     break;
                 case 6:
-                	Transaction.displayTransactionHistory();
+                	Transaction.getTransaction().displayTransactionHistory();
                     break;
                 case 7:
                     System.out.println("Exiting. Good Bye..");
