@@ -39,18 +39,20 @@ public class Transaction {
     }
 
     // Perform the returning of a book
-    public void returnBook(Book book, Member member) {
+    public boolean returnBook(Book book, Member member) {
         if (member.getBorrowedBooks().contains(book)) {
             member.returnBook(book);
             book.returnBook();
             String transactionDetails = getCurrentDateTime() + " - Returning: " + member.getName() + " returned " + book.getTitle();
             System.out.println(transactionDetails);
-         // save transaction details to file
             saveTransaction(transactionDetails);
+            return true;  // Return true if return is successful
         } else {
             System.out.println("This book was not borrowed by the member.");
+            return false;  // Return false if the book was not borrowed by the member
         }
     }
+
  // save transaction details to file
    private void saveTransaction(String transactionDetails) {
 	   try (BufferedWriter writer = new BufferedWriter(new FileWriter("transaction.txt", true))){

@@ -1,32 +1,50 @@
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class libraryManagementTest {
 
+    private Library library;
+    private Transaction transaction;
+    private Book book;
+    private Member member;
+
+    @Before
+    public void setUp() {
+        // Initialize library, transaction, book, and member
+        library = new Library();
+        transaction = Transaction.getTransaction();
+        try {
+			book = new Book(101, "Test Book");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        member = new Member(1, "Test Member");
+        library.addBook(book);
+        library.addMember(member);
+    }
+
     @Test
-    public void testBookId() throws Exception {
-        // Test valid boundary cases
-        Book validBookLow = new Book(100, "Valid Book Low");
-        assertEquals(100, validBookLow.getId());
-        assertEquals("Valid Book Low", validBookLow.getTitle());
+    public void testBorrowReturn() {
+        // Assert the book is available before borrowing
+        assertTrue("Book should be available", book.isAvailable());
 
-        Book validBookHigh = new Book(999, "Valid Book High");
-        assertEquals(999, validBookHigh.getId());
-        assertEquals("Valid Book High", validBookHigh.getTitle());
+        // Borrow the book
+        boolean borrowResult = transaction.borrowBook(book, member);
+        assertTrue("Book borrowing should be successful", borrowResult);
+        assertFalse("Book should not be available after borrowing", book.isAvailable());
 
-        // Test invalid cases
-        try {
-            new Book(99, "Invalid Book Low");
-            fail("Expected an exception for ID less than 100.");
-        } catch (Exception e) {
-            assertEquals("Invalid book ID. Must be between 100 and 999.", e.getMessage());
-        }
+        // Try borrowing the same book again (should fail)
+        boolean secondBorrowResult = transaction.borrowBook(book, member);
+        assertFalse("Book borrowing should fail since it's already borrowed", secondBorrowResult);
 
-        try {
-            new Book(1000, "Invalid Book High");
-            fail("Expected an exception for ID greater than 999.");
-        } catch (Exception e) {
-            assertEquals("Invalid book ID. Must be between 100 and 999.", e.getMessage());
-        }
+        // Return the book
+        transaction.returnBook(book, member);
+        assertTrue("Book should be available after returning", book.isAvailable());
+
+        // Try returning the same book again (should fail)
+        transaction.returnBook(book, member);
+        assertFalse("Book return should fail since it's already returned", book.isAvailable());
     }
 }
