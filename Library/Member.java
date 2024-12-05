@@ -12,7 +12,11 @@ public class Member {
         this.borrowedBooks = new ArrayList<>();
     }
 
-    // Getter methods
+    public Member(String string, String name2) {
+		// TODO Auto-generated constructor stub
+	}
+
+	// Getter methods
     public int getId() {
         return id;
     }

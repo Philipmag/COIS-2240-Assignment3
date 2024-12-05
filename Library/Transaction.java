@@ -9,19 +9,22 @@ import java.io.*;
 
 
 public class Transaction {
+    private static Transaction instance;
 
-	// Singleton Instance
-	private static Transaction instance;
-	
-	//private constructor to avoid instantiation
-	private Transaction() {}
-	// Public method to Retrieve the Singleton class
-	public static Transaction getTransaction() {
-		if (instance == null) {
-			instance = new Transaction();
-		}
-		return instance;
-	}
+    // Private constructor to prevent instantiation
+    private Transaction() {
+        // Initialization logic
+    }
+
+    // Singleton method to return the single instance
+    public static Transaction getTransaction() {
+        if (instance == null) {
+            instance = new Transaction();
+        }
+        return instance;
+    }
+
+
     // Perform the borrowing of a book
     public boolean borrowBook(Book book, Member member) {
         if (book.isAvailable()) {
