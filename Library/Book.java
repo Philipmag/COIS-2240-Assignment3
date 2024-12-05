@@ -4,8 +4,8 @@ public class Book {
     private boolean available;
 
     public Book(int id, String title) throws Exception {
-        if (!isValidId(id)) {
-            throw new Exception("Invalid Book ID: Must be between 100 and 999.");
+        if (id < 100 || id > 999) {
+            throw new Exception("Invalid book ID. Must be between 100 and 999.");
         }
         this.id = id;
         this.title = title;
